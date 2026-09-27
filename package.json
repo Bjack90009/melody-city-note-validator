@@ -1,0 +1,9 @@
+{
+  "name": "melody-city-note-validator",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "node verify.cjs",
+    "sync:data": "node scripts/sync-data.cjs"
+  }
+}
