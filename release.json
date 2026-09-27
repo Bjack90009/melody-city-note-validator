@@ -1,1 +1,16 @@
-{"version": "20260927-notes-v1", "design": "20260927候选V0.1", "items": 45, "presets": 10, "ruleTestGroups": 27, "uiTestGroups": 14, "initialStamina": 999, "defaultSkip": true, "icons": "reused-test-illustrations", "patch": "20260927-2rows3cols", "initialColumns": 3, "initialRows": 2, "unlockMode": "system-random-adjacent"}
+{
+  "version": "20260927-notes-v03",
+  "design": "20260927候选V0.3",
+  "items": 45,
+  "presets": 10,
+  "ruleTestGroups": 30,
+  "uiTestGroups": 14,
+  "initialStamina": 999,
+  "defaultSkip": true,
+  "icons": "reused-test-illustrations",
+  "patch": "20260927-v03",
+  "initialColumns": 3,
+  "initialRows": 2,
+  "unlockMode": "system-random-adjacent",
+  "designSourceHash": "c4d1c2cca2e4d5abae2b23563ec79f4eaf707e9381caeb7927adef380cb56291"
+}
