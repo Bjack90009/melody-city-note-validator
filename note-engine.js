@@ -120,7 +120,20 @@ function newState(data,mode='trial'){
 }
 function makeDraw(data,index,seed){const advanced=index%data.rules.advancedEvery===0,rng=E.random(seed),weights=advanced?data.rules.advancedWeights:data.rules.normalWeights,choices=[];const group=data.rules.sameQualityDraw?E.qualities[E.weighted(weights,rng)]:null;for(let k=0;k<3;k++){const q=group||E.qualities[E.weighted(weights,rng)],pool=data.items.filter(i=>i.quality===q&&!choices.includes(i.id));choices.push(pool[Math.floor(rng()*pool.length)].id);}return{index,advanced,choices};}
 // Resource utility is shared with the previous validator; inject the new draw function explicitly.
-function spend(state,data,amount){if(!Number.isInteger(amount)||amount<=0||state.stamina<amount)throw Error('体力不足或消耗值无效');if(state.drawQueue.length)throw Error('请先完成三选一');state.stamina-=amount;state.spent+=amount;const r=data.rules,room=49-state.unlocked.length-state.unlockCredits;let grants=0;if(room>0){state.unlockRemainder+=amount;grants=Math.min(room,Math.floor(state.unlockRemainder/r.unlockStamina)*r.unlockCells);state.unlockRemainder%=r.unlockStamina;state.unlockCredits+=grants;}if(state.unlocked.length+state.unlockCredits>=49)state.unlockRemainder=0;state.drawRemainder+=amount;while(state.drawRemainder>=r.drawStamina){state.drawRemainder-=r.drawStamina;state.drawCount++;state.drawQueue.push(makeDraw(data,state.drawCount,`${state.seed}:draw:${state.drawCount}`));}return grants;}
-const api={...E,tierIndex:level=>level-1,score,performance,newState,makeDraw,spend,supported};if(typeof module!=='undefined')module.exports=api;else root.NumericEngine=api;
+function autoUnlock(state,data){
+ const opened=[],cols=data.rules.cols,size=cols*data.rules.rows;
+ while(state.unlockCredits>0&&state.unlocked.length<size){
+  const candidates=[];
+  for(let c=0;c<size;c++)if(!state.unlocked.includes(c)&&state.unlocked.some(o=>Math.abs(o%cols-c%cols)+Math.abs(Math.floor(o/cols)-Math.floor(c/cols))===1))candidates.push(c);
+  if(!candidates.length)break;
+  const sequence=(state.unlockSequence||0)+1,rng=E.random(`${state.seed}:unlock:${sequence}`),cell=candidates[Math.floor(rng()*candidates.length)];
+  if(!E.unlock(state,data,cell))break;
+  state.unlockSequence=sequence;opened.push(cell);
+ }
+ if(state.unlocked.length===size){state.unlockCredits=0;state.unlockRemainder=0;}
+ return opened;
+}
+function spend(state,data,amount){if(!Number.isInteger(amount)||amount<=0||state.stamina<amount)throw Error('体力不足或消耗值无效');if(state.drawQueue.length)throw Error('请先完成三选一');state.stamina-=amount;state.spent+=amount;const r=data.rules,room=49-state.unlocked.length-state.unlockCredits;let grants=0;if(room>0){state.unlockRemainder+=amount;grants=Math.min(room,Math.floor(state.unlockRemainder/r.unlockStamina)*r.unlockCells);state.unlockRemainder%=r.unlockStamina;state.unlockCredits+=grants;}if(state.unlocked.length+state.unlockCredits>=49)state.unlockRemainder=0;autoUnlock(state,data);state.drawRemainder+=amount;while(state.drawRemainder>=r.drawStamina){state.drawRemainder-=r.drawStamina;state.drawCount++;state.drawQueue.push(makeDraw(data,state.drawCount,`${state.seed}:draw:${state.drawCount}`));}return grants;}
+const api={...E,tierIndex:level=>level-1,score,performance,newState,makeDraw,spend,autoUnlock,supported};if(typeof module!=='undefined')module.exports=api;else root.NumericEngine=api;
 })(typeof window!=='undefined'?window:globalThis);
 

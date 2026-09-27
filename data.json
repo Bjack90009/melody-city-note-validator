@@ -5,7 +5,7 @@
     "rows": 7,
     "cols": 7,
     "initialRows": 3,
-    "initialCols": 3,
+    "initialCols": 2,
     "unlockStamina": 5,
     "unlockCells": 2,
     "drawStamina": 3,

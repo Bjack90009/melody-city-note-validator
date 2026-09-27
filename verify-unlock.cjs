@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict'),E=require('./note-engine.js'),d=require('./data.json');
+const fresh=()=>E.newState(d,'trial');
+const s=fresh();assert.equal(s.unlocked.length,6);assert.equal(new Set(s.unlocked.map(c=>c%7)).size,2);assert.equal(new Set(s.unlocked.map(c=>Math.floor(c/7))).size,3);
+for(const p of s.placed)assert(E.validPlacement({...s,placed:[]},d,p.id,p.x,p.y));
+E.spend(s,d,4);assert.equal(s.unlocked.length,6);E.choose(s,d,s.drawQueue[0].choices[0]);E.spend(s,d,1);assert.equal(s.unlocked.length,8);assert.equal(s.unlockCredits,0);assert.equal(s.unlockRemainder,0);
+console.log('PASS initial 2 columns x 3 rows, starter fits, threshold auto-opens 2');
+const outcomes=new Set();for(let k=0;k<100;k++){const a=fresh();a.seed='unlock-test-'+k;a.unlockCredits=60;const b=E.clone(a),before=[...a.unlocked],opened=E.autoUnlock(a,d);assert.equal(opened.length,43);assert.equal(a.unlocked.length,49);assert.equal(a.unlockCredits,0);assert.equal(a.unlockRemainder,0);assert.deepEqual(E.autoUnlock(b,d),opened);assert.deepEqual(E.autoUnlock(a,d),[]);const seen=new Set(before);for(const c of opened){assert(!seen.has(c));assert([...seen].some(o=>Math.abs(o%7-c%7)+Math.abs(Math.floor(o/7)-Math.floor(c/7))===1));seen.add(c);}outcomes.add(opened.slice(0,4).join(','));}assert(outcomes.size>50);
+console.log('PASS 100 seeds: per-cell adjacency, unique cells, cap49, reproducibility and varied paths');
+const a=fresh();a.unlockCredits=3;a.unlocked.push(18,25,32);a.unlockRemainder=2;const before=[...a.unlocked];E.autoUnlock(a,d);assert.equal(a.unlocked.length,12);assert.deepEqual(a.unlocked.slice(0,9),before);assert.equal(a.unlockRemainder,2);assert.equal(a.unlockCredits,0);const draw=E.makeDraw(d,1,`${a.seed}:draw:1`),perf=E.performance(a,d,{seed:'unchanged'});E.autoUnlock(a,d);assert.deepEqual(E.makeDraw(d,1,`${a.seed}:draw:1`),draw);assert.deepEqual(E.performance(a,d,{seed:'unchanged'}),perf);
+console.log('PASS saved credits redeemed without losing old area or interfering with other random streams');
