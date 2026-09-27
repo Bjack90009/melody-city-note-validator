@@ -23,8 +23,18 @@ function score(state,data){
   }
   const entry=info[s.id];entry.value=value(s);entry.targets=targets.map(t=>t.id);entry.matches=near.map(t=>t.id);entry.count=scale;entry.active=targets.length>0;
   for(const t of targets){const n=t.base[t.level-1]*value(s)*scale/100;info[t.id].ability+=n;info[t.id].sources.push({name:s.name,value:n,type:'布局增益'});}
-  // Other effects are event-based. Highlight the relevant local region without pretending it is a static bonus.
-  if(!targets.length){entry.targets=inst.filter(t=>local(s,t)).map(t=>t.id);entry.active=false;}
+  // Event scopes are highlights only, never an implicit static bonus or a claimed proc.
+  if(!['C01','C02','C03','C04','B01','B02','R04','G01','G05','G03','G06','G08','G09','D01'].includes(s.id)){
+   let scope=[];
+   if(['P02','H03','R02','R03','R05','J02','J03','J04','J05','B04','G02','G07','G10'].includes(s.id))scope=[s];
+   else if(['R01','B03'].includes(s.id))scope=inst;
+   else if(s.id==='H04')scope=inst.filter(t=>t.category==='管乐');
+   else if(['H02','B05'].includes(s.id))scope=inst.filter(t=>t.id===s.id||near.some(n=>n.id===t.id)&&t.category==='管乐');
+   else if(s.id==='P05')scope=near.filter(t=>t.category==='弦乐');
+   else if(s.id==='P01'||s.category==='乐谱')scope=near;
+   else scope=inst.filter(t=>local(s,t));
+   entry.targets=scope.map(t=>t.id);entry.matches=['R01','R02','R05','J03','B04'].includes(s.id)?inst.filter(t=>t.id!==s.id).map(t=>t.id):entry.targets;entry.active=false;
+  }
  }
  let base=0,ability=0;for(const v of Object.values(info)){v.total=v.base+v.ability;base+=v.base;ability+=v.ability;}
  return{base,ability,total:base+ability,subtotal:base+ability,member:0,globalFixed:0,globalPercent:0,extraBeats:0,info,sets:[],globalSources:[]};
