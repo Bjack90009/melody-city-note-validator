@@ -7,16 +7,16 @@ function plan(state,data,scheme,seed=state.seed){
  if(!['A','B'].includes(scheme))throw Error('未知表演方案');
  const rng=E.random(`${seed}:process:${scheme}`),events=[],attempts=[],duration=10,lifetime=.5;
  const instruments=state.placed.map(p=>({...data.items.find(i=>i.id===p.id),...p})).filter(p=>p.category!=='乐谱').sort((a,b)=>a.id.localeCompare(b.id));
- const interval=()=>[1,1.5,2,2.5][Math.floor(rng()*4)];
- const clocks=instruments.map(p=>({p,next:scheme==='A'?1:interval()}));
+ const interval=()=>[.5,.75,1,1.25,1.5,1.75,2,2.25,2.5][Math.floor(rng()*9)];
+ const clocks=instruments.map(p=>({p,next:scheme==='A'?.25:interval()}));
  while(clocks.length){const time=Math.min(...clocks.map(c=>c.next));if(time>duration)break;
   for(const c of clocks.filter(c=>c.next===time)){
-   const emit=scheme==='B'||rng()>=.5;attempts.push({time,source:c.p.id,emit});
+   const emit=scheme==='B'||rng()>=.75;attempts.push({time,source:c.p.id,emit});
    if(emit){const q=qualityNames.indexOf(c.p.quality),notes=[];
     for(let y=0;y<c.p.height;y++)for(let x=0;x<c.p.width;x++){const r=rng(),quality=Math.min(4,q+(r<.8?0:r<.95?1:2));notes.push({x:c.p.x+x,y:c.p.y+y,quality});}
     events.push({time,source:c.p.id,name:c.p.name,notes});
    }
-   c.next=time+(scheme==='A'?1:interval());
+   c.next=time+(scheme==='A'?.25:interval());
   }
  }
  return{scheme,seed,duration,lifetime,events,attempts,instruments:instruments.length,total:events.reduce((n,e)=>n+e.notes.length,0)};
@@ -26,7 +26,7 @@ function open({state,data,scheme,onClose}){
  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const colors=['#70df92','#72baff','#c791ff','#ffd36a','#ff777d'];
  const dialog=document.createElement('dialog');dialog.className='process-stage';dialog.setAttribute('aria-label',`方案${scheme}表演过程测试`);
- dialog.innerHTML=`<div class="process-heading"><div><h2>方案${scheme} · 表演过程测试</h2><p>${scheme==='A'?'每秒独立判定：每件乐器50%不出音':'每件乐器每次出音后，重抽1／1.5／2／2.5秒间隔'}</p></div><button data-action="close" aria-label="关闭过程测试">关闭</button></div><div class="process-meta"><span data-time>0.0 / 10秒</span><span data-count>累计0枚</span><span data-status>播放中</span></div><div class="process-board-wrap"><div class="process-board" aria-label="音符表演棋盘"></div></div><progress max="10" value="0" aria-label="表演进度"></progress><div class="process-legend">${qualityNames.map((q,i)=>`<span style="--note-color:${colors[i]}">● ${q}</span>`).join('')}<span>同色80% · 高一级15% · 高二级5%</span></div><p class="process-help">每格独立品质 · 0.5秒淡入淡出 · 最高红色 · 仅观察过程，不叠加技能、不结算或消耗体力</p><div class="process-controls"><button data-action="pause">暂停</button><button data-action="replay">同种子重播</button><button data-action="random">换种子重播</button></div><p class="process-seed">种子：<span data-seed>${esc(seed)}</span> · 空格暂停／继续</p>`;
+ dialog.innerHTML=`<div class="process-heading"><div><h2>方案${scheme} · 表演过程测试</h2><p>${scheme==='A'?'每0.25秒独立判定：每件乐器75%不出音':'每件乐器每次出音后，重抽0.5～2.5秒间隔（步长0.25秒，9档等概率）'}</p></div><button data-action="close" aria-label="关闭过程测试">关闭</button></div><div class="process-meta"><span data-time>0.0 / 10秒</span><span data-count>累计0枚</span><span data-status>播放中</span></div><div class="process-board-wrap"><div class="process-board" aria-label="音符表演棋盘"></div></div><progress max="10" value="0" aria-label="表演进度"></progress><div class="process-legend">${qualityNames.map((q,i)=>`<span style="--note-color:${colors[i]}">● ${q}</span>`).join('')}<span>同色80% · 高一级15% · 高二级5%</span></div><p class="process-help">每格独立品质 · 0.5秒淡入淡出 · 最高红色 · 仅观察过程，不叠加技能、不结算或消耗体力</p><div class="process-controls"><button data-action="pause">暂停</button><button data-action="replay">同种子重播</button><button data-action="random">换种子重播</button></div><p class="process-seed">种子：<span data-seed>${esc(seed)}</span> · 空格暂停／继续</p>`;
  const board=dialog.querySelector('.process-board'),get=s=>dialog.querySelector(s);
  for(let c=0;c<data.rules.rows*data.rules.cols;c++){const cell=document.createElement('div');cell.className='process-cell'+(state.unlocked.includes(c)?' open':'');cell.style.gridColumn=c%data.rules.cols+1;cell.style.gridRow=Math.floor(c/data.rules.cols)+1;board.append(cell);}
  for(const p of state.placed){const i=data.items.find(i=>i.id===p.id),el=document.createElement('div');el.className='process-prop';el.style.gridColumn=`${p.x+1}/span ${i.width}`;el.style.gridRow=`${p.y+1}/span ${i.height}`;el.style.setProperty('--note-color',colors[qualityNames.indexOf(i.quality)]);el.innerHTML=`<img src="${esc(i.icon)}" alt="${esc(i.name)}"><span>${esc(i.name)}</span>`;board.append(el);}
