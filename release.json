@@ -8,9 +8,26 @@
   "initialStamina": 999,
   "defaultSkip": true,
   "icons": "reused-test-illustrations",
-  "patch": "20260927-v03",
+  "patch": "20260928-process-ab",
   "initialColumns": 3,
   "initialRows": 2,
   "unlockMode": "system-random-adjacent",
-  "designSourceHash": "c4d1c2cca2e4d5abae2b23563ec79f4eaf707e9381caeb7927adef380cb56291"
+  "designSourceHash": "c4d1c2cca2e4d5abae2b23563ec79f4eaf707e9381caeb7927adef380cb56291",
+  "processTests": {
+    "duration": 10,
+    "lifetime": 0.5,
+    "schemes": [
+      "A",
+      "B"
+    ],
+    "schemeB": "reroll-after-each-emission",
+    "weights": [
+      80,
+      15,
+      5
+    ],
+    "qualityCap": "红"
+  },
+  "processRuleTestGroups": 6,
+  "processUiTestGroups": 3
 }
