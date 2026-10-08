@@ -8,7 +8,7 @@
   "initialStamina": 999,
   "defaultSkip": true,
   "icons": "reused-test-illustrations",
-  "patch": "20260928-process-ab-r2",
+  "patch": "20261008-formal-icons",
   "initialColumns": 3,
   "initialRows": 2,
   "unlockMode": "system-random-adjacent",

@@ -116,7 +116,7 @@
         2208
       ],
       "description": "相邻其他乐器每有1种，自身基础演奏值增加X%；每次基础出音时，在第三轮追加K枚紫色四分音符，K为相邻其他乐器种类数，最多4。",
-      "icon": "assets/reused-icons/MusicCity_n_icon_tool_10419.png",
+      "icon": "assets/formal-icons-20261008/png/MusicCity_n_icon_tool_10419.png",
       "song": "古典",
       "notes": [
         "核心 · 保留围绕大型键盘编组的布局特色，属性为主、追加为辅。",
@@ -223,7 +223,7 @@
         1150
       ],
       "description": "场上有至少3种乐器时，金色键盘和金色弦乐器的基础演奏值增加X%。",
-      "icon": "assets/reused-icons/MusicCity_n_icon_tool_10417.png",
+      "icon": "assets/formal-icons-20261008/png/MusicCity_n_icon_tool_30443.png",
       "song": "古典",
       "notes": [
         "连接 · 以简单声部条件支持管风琴，体现紫色编组能力。",
@@ -643,7 +643,7 @@
         460
       ],
       "description": "场上弦乐器来源的蓝色四分音符、紫色八分音符得分增加X%。",
-      "icon": "assets/reused-icons/MusicCity_n_icon_tool_40321.png",
+      "icon": "assets/formal-icons-20261008/png/MusicCity_n_icon_tool_40160.png",
       "song": "流行",
       "notes": [
         "连接 · 蓝色四分音符同时覆盖尼龙吉他与其复制。",
@@ -748,7 +748,7 @@
         2208
       ],
       "description": "第二轮中，将场上弦乐和管乐来源的基础四分音符，每2枚同为蓝色或同为紫色的音符换成1枚高一级的基础四分音符；每批最多交换2组，优先紫色组。原音符被消耗，新音符继承排序靠前者来源，由本效果生成的音符得分增加X%。",
-      "icon": "assets/reused-icons/MusicCity_n_icon_tool_60314.png",
+      "icon": "assets/formal-icons-20261008/png/MusicCity_n_icon_tool_30314.png",
       "song": "华丽",
       "notes": [
         "核心 · 牺牲数量换品质和单枚价值，蓝色声源也能参与；两蓝换紫、两紫换金。",
@@ -1223,7 +1223,7 @@
         690
       ],
       "description": "场上键盘和打击乐器的基础演奏值增加X%。",
-      "icon": "assets/reused-icons/MusicCity_n_icon_tool_10318.png",
+      "icon": "assets/formal-icons-20261008/png/MusicCity_n_icon_tool_30158.png",
       "song": "摇滚",
       "notes": [
         "连接 · 蓝色连接件只提供简单属性支持，帮助架子鼓。",
@@ -1327,7 +1327,7 @@
         460
       ],
       "description": "场上实际随机变调过的四分音符、紫色八分音符得分增加X%。",
-      "icon": "assets/reused-icons/MusicCity_n_icon_tool_40323.png",
+      "icon": "assets/formal-icons-20261008/png/MusicCity_n_icon_tool_50323.png",
       "song": "摇滚",
       "notes": [
         "连接 · 简单加分直接支持摇滚Solo，去掉每秒追加阈值。",
@@ -1688,7 +1688,7 @@
         368
       ],
       "description": "自身基础演奏值增加X%。",
-      "icon": "assets/reused-icons/MusicCity_n_icon_tool_10417.png",
+      "icon": "assets/formal-icons-20261008/png/MusicCity_n_icon_tool_20339.png",
       "song": "通用",
       "notes": [
         "连接（通用） · 便宜的键盘种类与绿音符来源。",
@@ -1835,7 +1835,7 @@
         368
       ],
       "description": "场上弦乐器来源的绿色四分音符得分增加X%。",
-      "icon": "assets/reused-icons/MusicCity_n_icon_tool_60111.png",
+      "icon": "assets/formal-icons-20261008/png/MusicCity_n_icon_tool_20440.png",
       "song": "通用",
       "notes": [
         "连接（通用） · 横向两格、简单类别与品质支持。",
@@ -2031,7 +2031,7 @@
         184
       ],
       "description": "场上键盘乐器基础演奏值增加X%。",
-      "icon": "assets/reused-icons/MusicCity_n_icon_tool_40222.png",
+      "icon": "assets/formal-icons-20261008/png/MusicCity_n_icon_tool_30222.png",
       "song": "通用",
       "notes": [
         "连接（通用） · 单格补打击声部。",
@@ -2129,7 +2129,7 @@
         184
       ],
       "description": "自身来源的绿色、蓝色四分音符得分增加X%。",
-      "icon": "assets/reused-icons/MusicCity_n_icon_tool_40126.png",
+      "icon": "assets/formal-icons-20261008/png/MusicCity_n_icon_tool_30241.png",
       "song": "通用",
       "notes": [
         "连接（通用） · 单格通用低品质产音件。",
